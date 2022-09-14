@@ -26,8 +26,9 @@ input:focus-visible {
   line-height: 22px;
   cursor: pointer;
   transition: background 0.3s ease;
-  width: 200px;
-  top: 52px;
+  width: 94%;
+  max-width: 300px;
+  top: 100px;
   overflow-y: scroll;
   max-height: 200px;
   margin-top: 0;

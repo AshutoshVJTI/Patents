@@ -27,18 +27,26 @@ const Patents = () => {
     }
   }, [value]);
   return (
-    <div className="root">
-      {isLoading && <div className="loading" />}
-      <div>
-        <Autocomplete
-          label="Select Organization"
-          setValue={setValue}
-          data={organizations}
-          placeholder="Start typing..."
-        />
-      </div>
-      <div className="chart-container">
-        <Chart data={data} />
+    <div className="main-wrapper">
+      {isLoading && (
+        <div className="loading">
+          <div className="loader" />
+        </div>
+      )}
+      <div className="card">
+        <div>
+          <Autocomplete
+            label="Select Organization"
+            setValue={setValue}
+            data={organizations}
+            placeholder="Start typing..."
+          />
+        </div>
+        {data.count && (
+          <div className="chart-container">
+            <Chart data={data} />
+          </div>
+        )}
       </div>
     </div>
   );
