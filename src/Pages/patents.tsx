@@ -42,7 +42,8 @@ const Patents = () => {
             placeholder="Start typing..."
           />
         </div>
-        {data.count && (
+        {!isLoading && <div className="main-heading">{value}</div>}
+        {!isLoading && data.count && (
           <div className="chart-container">
             <Chart data={data} />
           </div>

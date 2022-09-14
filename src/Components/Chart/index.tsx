@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { ChartProps, Dataset, patent } from "../../Types/types";
 import randomBackgroundColor from "../../Utils/randomBackgroundColor";
+import './chart.css'
 
 ChartJS.register(
   CategoryScale,
@@ -64,13 +65,7 @@ const Chart = (props: ChartProps) => {
   }, [cpcCodes]);
 
   const options = {
-    plugins: {
-      title: {
-        display: true,
-        text: "Stacked Bar Chart",
-      },
-    },
-    responsive: true,
+    maintainAspectRatio : false,
     scales: {
       x: {
         stacked: true,
@@ -87,7 +82,7 @@ const Chart = (props: ChartProps) => {
   };
 
   return (
-    <div style={{ margin: 20 }}>
+    <div className="root">
       <Bar data={chartData} options={options} />
     </div>
   );
