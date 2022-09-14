@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.chart-container {
+  margin-top: 50px;
+  border: 1px solid black;
+  width: 90%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
