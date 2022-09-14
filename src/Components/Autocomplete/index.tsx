@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AutocompleteProps, organization } from '../../Types/types';
+import { AutocompleteProps, organization } from "../../Types/types";
 import "./autocomplete.css";
 
 const Autocomplete = (props: AutocompleteProps) => {
@@ -14,7 +14,7 @@ const Autocomplete = (props: AutocompleteProps) => {
       setInput("");
       return;
     }
-    const result: organization[] = data.filter((item: any) => {
+    const result: organization[] = data.filter((item: organization) => {
       const dataTosearch: string = JSON.parse(
         JSON.stringify(item.organization)
       );

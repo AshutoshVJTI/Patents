@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
-import Patents from './Pages/patents';
+import React from "react";
+import "./App.css";
+import Patents from "./Pages/patents";
 
 function App() {
   return (

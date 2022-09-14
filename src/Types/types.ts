@@ -1,6 +1,6 @@
 export interface patent {
   patent_date: string;
-  cpcs: any[];
+  cpcs: { cpc_section_id: any }[];
 }
 
 export interface organization {
@@ -27,4 +27,10 @@ export interface AutocompleteProps {
 
 export interface ChartProps {
   data: PatentData;
+}
+
+export interface Dataset {
+  label: string;
+  data: number[];
+  backgroundColor: string;
 }

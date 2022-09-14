@@ -5,24 +5,25 @@ import { PatentData } from "../Types/types";
 import { organizations } from "../Utils/organizations";
 import Chart from "../Components/Chart";
 import getPastDate from "../Utils/getPastDate";
-import './patents.css'
+import "./patents.css";
 
 const Patents = () => {
   const [data, setData] = useState<PatentData>({} as PatentData);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (value) {
-      setIsLoading(true)
+      setIsLoading(true);
       axios
-      .get(
-        `https://api.patentsview.org/patents/query?q={"_and": [{"_gte":{"assignee_organization":"${value}"}},{"patent_date":"${getPastDate(
-          5
+        .get(
+          `https://api.patentsview.org/patents/query?q={"_and": [{"_gte":{"assignee_organization":"${value}"}},{"patent_date":"${getPastDate(
+            5
           )}"}]}&f=["patent_date","cpc_section_id"]&o={"per_page":9999999999}`
-          )
+        )
         .then((response) => {
           setData(response.data);
-        }).finally(() => setIsLoading(false))
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [value]);
   return (

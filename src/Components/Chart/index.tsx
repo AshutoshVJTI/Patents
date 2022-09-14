@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { ChartProps, patent } from "../../Types/types";
+import { ChartProps, Dataset, patent } from "../../Types/types";
 import randomBackgroundColor from "../../Utils/randomBackgroundColor";
 
 ChartJS.register(
@@ -25,7 +25,7 @@ const Chart = (props: ChartProps) => {
   const { data } = props;
   const [labels, setLabels] = useState<string[]>([]);
   const [cpcCodes, setCpcCodes] = useState<any[]>([]);
-  const [dataset, setDataset] = useState<any[]>([]);
+  const [dataset, setDataset] = useState<Dataset[]>([]);
 
   useEffect(() => {
     if (data.patents) {
@@ -48,7 +48,7 @@ const Chart = (props: ChartProps) => {
       setCpcCodes(cpcCount);
     }
   }, [data.patents]);
-  
+
   useEffect(() => {
     for (let i = 0; i < Object.keys(cpcCodes).length; i++) {
       const datasetItem = {
@@ -56,12 +56,12 @@ const Chart = (props: ChartProps) => {
         data: [Object.values(cpcCodes)[i]],
         backgroundColor: randomBackgroundColor(),
       };
-      setDataset(dataset => [...dataset, datasetItem]);
+      setDataset((dataset) => [...dataset, datasetItem]);
     }
-    return (() => {
-      setDataset([])
-    })
-  }, [cpcCodes])
+    return () => {
+      setDataset([]);
+    };
+  }, [cpcCodes]);
 
   const options = {
     plugins: {
@@ -87,7 +87,7 @@ const Chart = (props: ChartProps) => {
   };
 
   return (
-    <div style={{ margin: 20}}>
+    <div style={{ margin: 20 }}>
       <Bar data={chartData} options={options} />
     </div>
   );
