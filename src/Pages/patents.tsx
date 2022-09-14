@@ -28,7 +28,7 @@ const Patents = () => {
   }, [value]);
   return (
     <div className="root">
-      {isLoading && <div className="loading">Loading ...</div>}
+      {isLoading && <div className="loading" />}
       <div>
         <Autocomplete
           label="Select Organization"
