@@ -34,7 +34,7 @@ const Patents = () => {
         </div>
       )}
       <div className="card">
-        <div>
+        <div className="center">
           <Autocomplete
             label="Select Organization"
             setValue={setValue}
