@@ -28,7 +28,7 @@ const Chart = (props: ChartProps) => {
   const { data } = props;
   const [dates, setDates] = useState<string[]>([]);
   const [sortedDates, setSortedDates] = useState<patent[][]>([]);
-  const [cpcCodes, setCpcCodes] = useState<{[key: string]: number}[]>([]);
+  const [cpcCodes, setCpcCodes] = useState<{ [key: string]: number }[]>([]);
   const [labelCpcCounts, setLabelCpcCounts] = useState<number[]>([]);
 
   useEffect(() => {
@@ -61,9 +61,12 @@ const Chart = (props: ChartProps) => {
         const cpc = sortedDates[i].map(
           (item: patent) => item.cpcs[0].cpc_section_id
         );
-        const cpcCount = cpc.reduce((accumulator: {[key: string]: number}, value: string) => {
-          return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
-        }, {});
+        const cpcCount = cpc.reduce(
+          (accumulator: { [key: string]: number }, value: string) => {
+            return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
+          },
+          {}
+        );
         setCpcCodes((cpcCodes) => [...cpcCodes, cpcCount]);
       }
     }
