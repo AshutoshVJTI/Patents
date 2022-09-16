@@ -1,6 +1,6 @@
 export interface patent {
   patent_date: string;
-  cpcs: { cpc_section_id: any }[];
+  cpcs: { cpc_section_id: string }[];
 }
 
 export interface organization {

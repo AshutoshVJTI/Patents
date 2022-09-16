@@ -27,9 +27,9 @@ export const labels = ["A", "B", "C", "D", "E", "F", "G", "H", "Y"];
 const Chart = (props: ChartProps) => {
   const { data } = props;
   const [dates, setDates] = useState<string[]>([]);
-  const [sortedDates, setSortedDates] = useState<any[]>([]);
-  const [cpcCodes, setCpcCodes] = useState<any[]>([]);
-  const [labelCpcCounts, setLabelCpcCounts] = useState<any>([]);
+  const [sortedDates, setSortedDates] = useState<patent[][]>([]);
+  const [cpcCodes, setCpcCodes] = useState<{[key: string]: number}[]>([]);
+  const [labelCpcCounts, setLabelCpcCounts] = useState<number[]>([]);
 
   useEffect(() => {
     if (data.patents) {
@@ -50,34 +50,43 @@ const Chart = (props: ChartProps) => {
       );
       setSortedDates((sortedDates) => [...sortedDates, sortedArr]);
     }
+    return () => {
+      setSortedDates([]);
+    };
   }, [data.patents, dates]);
 
   useEffect(() => {
     if (data.patents) {
       for (let i = 0; i < sortedDates.length; i++) {
         const cpc = sortedDates[i].map(
-          (item: any) => item.cpcs[0].cpc_section_id
+          (item: patent) => item.cpcs[0].cpc_section_id
         );
-        const cpcCount = cpc.reduce((accumulator: any, value: any) => {
+        const cpcCount = cpc.reduce((accumulator: {[key: string]: number}, value: string) => {
           return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
         }, {});
         setCpcCodes((cpcCodes) => [...cpcCodes, cpcCount]);
       }
     }
+    return () => {
+      setCpcCodes([]);
+    };
   }, [data.patents, sortedDates]);
 
   useEffect(() => {
-    const sortedObj = Object.fromEntries(Object.entries(cpcCodes).sort())
+    const sortedObj = Object.fromEntries(Object.entries(cpcCodes).sort());
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < cpcCodes.length; j++) {
-        let num: any = 0;
+        let num = 0;
         if (Object.keys(sortedObj[j]).includes(labels[i])) {
           num = Object.values(sortedObj[j])[0];
           delete sortedObj[j][Object.keys(sortedObj[j])[0]];
         }
-        setLabelCpcCounts((labelCpcCounts: any) => [...labelCpcCounts, num]);
+        setLabelCpcCounts((labelCpcCounts) => [...labelCpcCounts, num]);
       }
     }
+    return () => {
+      setLabelCpcCounts([]);
+    };
   }, [cpcCodes]);
 
   const dataset = labels.map((item, index) => {
