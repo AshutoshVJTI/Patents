@@ -9,9 +9,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { ChartProps, Dataset, patent } from "../../Types/types";
+import { ChartProps, patent } from "../../Types/types";
 import randomBackgroundColor from "../../Utils/randomBackgroundColor";
-import './chart.css'
+import "./chart.css";
 
 ChartJS.register(
   CategoryScale,
@@ -22,50 +22,77 @@ ChartJS.register(
   Legend
 );
 
+export const labels = ["A", "B", "C", "D", "E", "F", "G", "H", "Y"];
+
 const Chart = (props: ChartProps) => {
   const { data } = props;
-  const [labels, setLabels] = useState<string[]>([]);
+  const [dates, setDates] = useState<string[]>([]);
+  const [sortedDates, setSortedDates] = useState<any[]>([]);
   const [cpcCodes, setCpcCodes] = useState<any[]>([]);
-  const [dataset, setDataset] = useState<Dataset[]>([]);
+  const [labelCpcCounts, setLabelCpcCounts] = useState<any>([]);
 
   useEffect(() => {
     if (data.patents) {
-      const dates: string[] = data.patents.map(
-        (item: patent) => item.patent_date
+      const dates: string[] = data.patents.map((item: patent) =>
+        item.patent_date.slice(0, -3)
       );
       const uniqueDates = dates.filter(
         (item, idx, arr) => arr.indexOf(item) === idx
       );
-      setLabels(uniqueDates);
+      setDates(uniqueDates);
     }
   }, [data.patents]);
+
+  useEffect(() => {
+    for (let i = 0; i < dates.length; i++) {
+      const sortedArr = data.patents.filter(
+        (item) => item.patent_date.slice(0, -3) === dates[i]
+      );
+      setSortedDates((sortedDates) => [...sortedDates, sortedArr]);
+    }
+  }, [data.patents, dates]);
 
   useEffect(() => {
     if (data.patents) {
-      const cpc = data.patents.map((item) => item.cpcs[0].cpc_section_id);
-      const cpcCount = cpc.reduce((accumulator, value) => {
-        return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
-      }, {});
-      setCpcCodes(cpcCount);
+      for (let i = 0; i < sortedDates.length; i++) {
+        const cpc = sortedDates[i].map(
+          (item: any) => item.cpcs[0].cpc_section_id
+        );
+        const cpcCount = cpc.reduce((accumulator: any, value: any) => {
+          return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
+        }, {});
+        setCpcCodes((cpcCodes) => [...cpcCodes, cpcCount]);
+      }
     }
-  }, [data.patents]);
+  }, [data.patents, sortedDates]);
 
   useEffect(() => {
-    for (let i = 0; i < Object.keys(cpcCodes).length; i++) {
-      const datasetItem = {
-        label: Object.keys(cpcCodes)[i],
-        data: [Object.values(cpcCodes)[i]],
-        backgroundColor: randomBackgroundColor(),
-      };
-      setDataset((dataset) => [...dataset, datasetItem]);
+    const sortedObj = Object.fromEntries(Object.entries(cpcCodes).sort())
+    for (let i = 0; i < labels.length; i++) {
+      for (let j = 0; j < cpcCodes.length; j++) {
+        let num: any = 0;
+        if (Object.keys(sortedObj[j]).includes(labels[i])) {
+          num = Object.values(sortedObj[j])[0];
+          delete sortedObj[j][Object.keys(sortedObj[j])[0]];
+        }
+        setLabelCpcCounts((labelCpcCounts: any) => [...labelCpcCounts, num]);
+      }
     }
-    return () => {
-      setDataset([]);
-    };
   }, [cpcCodes]);
 
+  const dataset = labels.map((item, index) => {
+    return {
+      label: item,
+      data: labelCpcCounts.slice(
+        (labelCpcCounts.length / 9) * index,
+        (labelCpcCounts.length / 9) * (index + 1)
+      ),
+      backgroundColor: randomBackgroundColor(),
+    };
+  });
+
   const options = {
-    maintainAspectRatio : false,
+    maintainAspectRatio: false,
     scales: {
       x: {
         stacked: true,
@@ -77,7 +104,7 @@ const Chart = (props: ChartProps) => {
   };
 
   const chartData = {
-    labels,
+    labels: dates,
     datasets: dataset,
   };
 

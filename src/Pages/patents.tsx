@@ -16,9 +16,9 @@ const Patents = () => {
       setIsLoading(true);
       axios
         .get(
-          `https://api.patentsview.org/patents/query?q={"_and": [{"_gte":{"assignee_organization":"${value}"}},{"patent_date":"${getPastDate(
+          `https://api.patentsview.org/patents/query?q={"_and": [{"assignee_organization":"${value}"},{"_gte":{"patent_date":"${getPastDate(
             5
-          )}"}]}&f=["patent_date","cpc_section_id"]&o={"per_page":9999999999}`
+          )}"}}]}&f=["patent_date","cpc_section_id"]&o={"per_page":9999999999}`
         )
         .then((response) => {
           setData(response.data);
