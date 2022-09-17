@@ -55,7 +55,9 @@ const Autocomplete = (props: AutocompleteProps) => {
   };
   return (
     <div className="fields">
-      <span>{label}</span>
+      <div className="heading">
+        <span>{label}</span>
+      </div>
       <div className="field">
         <input
           type="text"

@@ -44,12 +44,13 @@ const Chart = (props: ChartProps) => {
   }, [data.patents]);
 
   useEffect(() => {
-    for (let i = 0; i < dates.length; i++) {
+    dates.map((date) => {
       const sortedArr = data.patents.filter(
-        (item) => item.patent_date.slice(0, -3) === dates[i]
+        (item) => item.patent_date.slice(0, -3) === date
       );
       setSortedDates((sortedDates) => [...sortedDates, sortedArr]);
-    }
+      return null;
+    });
     return () => {
       setSortedDates([]);
     };
@@ -57,10 +58,8 @@ const Chart = (props: ChartProps) => {
 
   useEffect(() => {
     if (data.patents) {
-      for (let i = 0; i < sortedDates.length; i++) {
-        const cpc = sortedDates[i].map(
-          (item: patent) => item.cpcs[0].cpc_section_id
-        );
+      sortedDates.map((item) => {
+        const cpc = item.map((item: patent) => item.cpcs[0].cpc_section_id);
         const cpcCount = cpc.reduce(
           (accumulator: { [key: string]: number }, value: string) => {
             return { ...accumulator, [value]: (accumulator[value] || 0) + 1 };
@@ -68,7 +67,8 @@ const Chart = (props: ChartProps) => {
           {}
         );
         setCpcCodes((cpcCodes) => [...cpcCodes, cpcCount]);
-      }
+        return null;
+      });
     }
     return () => {
       setCpcCodes([]);
@@ -77,16 +77,18 @@ const Chart = (props: ChartProps) => {
 
   useEffect(() => {
     const sortedObj = Object.fromEntries(Object.entries(cpcCodes).sort());
-    for (let i = 0; i < labels.length; i++) {
-      for (let j = 0; j < cpcCodes.length; j++) {
+    labels.map((item) => {
+      cpcCodes.map((cpcCode, index) => {
         let num = 0;
-        if (Object.keys(sortedObj[j]).includes(labels[i])) {
-          num = Object.values(sortedObj[j])[0];
-          delete sortedObj[j][Object.keys(sortedObj[j])[0]];
+        if (Object.keys(sortedObj[index]).includes(item)) {
+          num = Object.values(sortedObj[index])[0];
+          delete sortedObj[index][Object.keys(sortedObj[index])[0]];
         }
         setLabelCpcCounts((labelCpcCounts) => [...labelCpcCounts, num]);
-      }
-    }
+        return null;
+      });
+      return null;
+    });
     return () => {
       setLabelCpcCounts([]);
     };
