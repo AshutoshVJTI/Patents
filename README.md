@@ -15,3 +15,10 @@ Install the dependencies and devDependencies and start the server.
 - Specify port- PORT=[PORT] //Example: PORT=3001
 - After changing port you have to restart the server
 ```
+
+# Setting up Docker
+
+```sh
+- docker build -t patents:dev .
+- docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true patents:dev
+```
