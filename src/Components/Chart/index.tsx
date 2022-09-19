@@ -106,6 +106,27 @@ const Chart = (props: ChartProps) => {
   });
 
   const options = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context: any) {
+            let label: string | string[] =
+              context.dataset.label + ": " + context.formattedValue || "";
+            if (context.parsed.y !== null) {
+              const total = Object.values(context.parsed._stacks.y).reduce(
+                (acc: number, curr: any, index) => {
+                  if (index < 9) return (acc += curr);
+                  return (acc += 0);
+                },
+                0
+              );
+              label = [label, `Total: ${total}`];
+            }
+            return label;
+          },
+        },
+      },
+    },
     maintainAspectRatio: false,
     scales: {
       x: {
