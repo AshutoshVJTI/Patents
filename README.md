@@ -6,5 +6,4 @@ Install the dependencies and devDependencies and start the server.
 cd patents-master
 npm i
 npm start
-(localhost:3000)
 ```
