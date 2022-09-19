@@ -16,7 +16,7 @@ Install the dependencies and devDependencies and start the server.
 - After changing port you have to restart the server
 ```
 
-# Setting up Docker
+## Setting up Docker
 
 ```sh
 - docker build -t patents:dev .
