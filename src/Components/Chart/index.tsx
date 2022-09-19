@@ -44,6 +44,7 @@ const Chart = (props: ChartProps) => {
   }, [data.patents]);
 
   useEffect(() => {
+    dates.sort();
     dates.map((date) => {
       const sortedArr = data.patents.filter(
         (item) => item.patent_date.slice(0, -3) === date
