@@ -1,26 +1,18 @@
-# pull official base image
+# Fetching the latest node image on apline linux
+FROM node:alpine AS development
 
-FROM node:13.12.0-alpine
+# Declaring env
+ENV NODE_ENV development
 
-# set working directory
+# Setting up the work directory
+WORKDIR /react-app
 
-WORKDIR /app
+# Installing dependencies
+COPY ./package.json /react-app
+RUN npm install
 
-# add `/app/node_modules/.bin` to $PATH
+# Copying all the files in our project
+COPY . .
 
-ENV PATH /app/node_modules/.bin:$PATH
-
-# install app dependencies
-
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-
-# add app
-
-COPY . ./
-
-# start app
-
-CMD ["npm", "start"]
+# Starting our application
+CMD npm start

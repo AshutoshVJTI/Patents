@@ -15,4 +15,4 @@ Setting up Port:
 Setting up Docker:
 
 1. docker build -t patents:dev .
-2. docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true patents:dev
+2. docker run -p 3000:3000 -d patents:dev
