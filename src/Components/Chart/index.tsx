@@ -12,6 +12,7 @@ import {
 import { ChartProps, patent } from "../../Types/types";
 import randomBackgroundColor from "../../Utils/randomBackgroundColor";
 import "./chart.css";
+import getAllDates from '../../Utils/getAllDates';
 
 ChartJS.register(
   CategoryScale,
@@ -45,7 +46,8 @@ const Chart = (props: ChartProps) => {
 
   useEffect(() => {
     dates.sort();
-    dates.map((date) => {
+    const allDates = getAllDates(dates[0], dates[dates.length - 1])
+    allDates.map((date) => {
       const sortedArr = data.patents.filter(
         (item) => item.patent_date.slice(0, -3) === date
       );

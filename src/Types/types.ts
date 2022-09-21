@@ -18,11 +18,10 @@ export interface ChartLabel {
   count: number;
 }
 
-export interface AutocompleteProps {
-  label: string;
-  data: organization[];
+export interface SelectProps {
+  options: string[];
   setValue: React.Dispatch<React.SetStateAction<string>>;
-  placeholder: string;
+  value: string;
 }
 
 export interface ChartProps {
